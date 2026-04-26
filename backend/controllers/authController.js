@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../../database/models/User.js';
+import User from '../database/models/User.js';
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });

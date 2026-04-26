@@ -1,4 +1,4 @@
-import MentorshipRequest from '../../database/models/MentorshipRequest.js';
+import MentorshipRequest from '../database/models/MentorshipRequest.js';
 
 export const sendRequest = async (req, res) => {
   try {

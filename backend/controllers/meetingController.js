@@ -1,6 +1,6 @@
-import Meeting from '../../database/models/Meeting.js';
-import MentorshipRequest from '../../database/models/MentorshipRequest.js';
-import User from '../../database/models/User.js';
+import Meeting from '../database/models/Meeting.js';
+import MentorshipRequest from '../database/models/MentorshipRequest.js';
+import User from '../database/models/User.js';
 
 // ── Student: Request a meeting ────────────────────────────────────────────────
 export const requestMeeting = async (req, res) => {

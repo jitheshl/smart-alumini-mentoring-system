@@ -1,6 +1,6 @@
-import ChatMessage from '../../database/models/ChatMessage.js';
-import User from '../../database/models/User.js';
-import MentorshipRequest from '../../database/models/MentorshipRequest.js';
+import ChatMessage from '../database/models/ChatMessage.js';
+import User from '../database/models/User.js';
+import MentorshipRequest from '../database/models/MentorshipRequest.js';
 
 const canChat = async (currentUser, otherUser) => {
   if (!otherUser || otherUser.isBlocked) return false;

@@ -1,8 +1,8 @@
-import User from '../../database/models/User.js';
-import Job from '../../database/models/Job.js';
-import MentorshipRequest from '../../database/models/MentorshipRequest.js';
-import Complaint from '../../database/models/Complaint.js';
-import Meeting from '../../database/models/Meeting.js';
+import User from '../database/models/User.js';
+import Job from '../database/models/Job.js';
+import MentorshipRequest from '../database/models/MentorshipRequest.js';
+import Complaint from '../database/models/Complaint.js';
+import Meeting from '../database/models/Meeting.js';
 
 export const getPendingAlumni = async (req, res) => {
   try {
