@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaints — AlumniConnect</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a href="/student/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">🎓</div>
+        <span class="sidebar-brand-text">AlumniConnect</span>
+      </a>
+      <div class="sidebar-user">
+        <div id="sb-avatar"></div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sb-name">Loading…</div>
+          <div class="sidebar-user-role">Student</div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <a href="/student/dashboard.html" class="nav-item"><span class="nav-item-icon">🏠</span> Dashboard</a>
+        <a href="/student/profile.html" class="nav-item"><span class="nav-item-icon">👤</span> My Profile</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Network</div>
+        <a href="/student/mentors.html" class="nav-item"><span class="nav-item-icon">🤝</span> Find Mentors</a>
+        <a href="/student/my-mentors.html" class="nav-item"><span class="nav-item-icon">👨‍🏫</span> My Mentors</a>
+        <a href="/student/jobs.html" class="nav-item"><span class="nav-item-icon">💼</span> Jobs &amp; Internships</a>
+        <a href="/student/requests.html" class="nav-item"><span class="nav-item-icon">📨</span> My Requests</a>
+        <a href="/student/meetings.html" class="nav-item"><span class="nav-item-icon">📅</span> My Meetings</a>
+        <a href="/student/chat.html" class="nav-item"><span class="nav-item-icon">💬</span> Chat</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Safety</div>
+        <a href="/student/complaints.html" class="nav-item active"><span class="nav-item-icon">🚩</span> Complaints</a>
+      </div>
+      <div class="sidebar-footer">
+        <button class="nav-item" id="logout-btn"><span class="nav-item-icon">🚪</span> Logout</button>
+      </div>
+    </aside>
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Report a Complaint</h1>
+          <p class="page-subtitle">Let us know if you've experienced any issues with an alumni</p>
+        </div>
+      </div>
+      <div class="content-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;flex-wrap:wrap;" id="complaint-layout">
+
+          <!-- Report Form -->
+          <div class="card">
+            <div class="card-header" style="padding-bottom:20px;">
+              <div class="card-title">🚩 File a New Complaint</div>
+            </div>
+            <div class="card-body" style="padding-top:0;">
+              <form id="complaint-form" novalidate>
+                <div class="form-group">
+                  <label class="form-label">Select Alumni</label>
+                  <select class="form-control form-select" id="alumni-select" required>
+                    <option value="">Choose an alumni…</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Your Complaint</label>
+                  <textarea class="form-textarea" id="complaint-msg" rows="5" placeholder="Describe the issue in detail…" required maxlength="1000"></textarea>
+                  <div class="text-xs text-muted mt-1" id="msg-counter">0 / 1000</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Evidence (optional)</label>
+                  <label class="file-upload-area" for="evidence-input">
+                    <div class="file-upload-icon">📎</div>
+                    <div>Click to attach a file</div>
+                    <div class="text-xs text-muted mt-1">Images, PDFs up to 5MB</div>
+                    <input type="file" id="evidence-input" accept="image/*,.pdf,.doc,.docx">
+                  </label>
+                  <div class="text-xs text-muted mt-1" id="file-name-display"></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Link to Meeting <span class="text-muted">(optional)</span></label>
+                  <select class="form-control form-select" id="meeting-select">
+                    <option value="">— No meeting linked —</option>
+                  </select>
+                  <div class="text-xs text-muted mt-1">If this complaint relates to a specific 1-on-1 meeting, select it above.</div>
+                </div>
+                <button type="submit" class="btn btn-danger w-full" id="submit-complaint-btn">🚩 Submit Complaint</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Past Complaints -->
+          <div>
+            <div class="section-header">
+              <div class="section-title">📋 My Past Complaints</div>
+            </div>
+            <div id="complaints-list">
+              <div class="flex-center" style="padding:40px 0;"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/js/complaints.js"></script>
+</body>
+</html>

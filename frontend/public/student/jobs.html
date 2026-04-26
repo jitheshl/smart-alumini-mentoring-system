@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jobs & Internships — AlumniConnect</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a href="/student/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">🎓</div>
+        <span class="sidebar-brand-text">AlumniConnect</span>
+      </a>
+      <div class="sidebar-user">
+        <div id="sb-avatar"></div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sb-name">Loading…</div>
+          <div class="sidebar-user-role">Student</div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <a href="/student/dashboard.html" class="nav-item"><span class="nav-item-icon">🏠</span> Dashboard</a>
+        <a href="/student/profile.html" class="nav-item"><span class="nav-item-icon">👤</span> My Profile</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Network</div>
+        <a href="/student/mentors.html" class="nav-item"><span class="nav-item-icon">🤝</span> Find Mentors</a>
+        <a href="/student/my-mentors.html" class="nav-item"><span class="nav-item-icon">👨‍🏫</span> My Mentors</a>
+        <a href="/student/jobs.html" class="nav-item active"><span class="nav-item-icon">💼</span> Jobs & Internships</a>
+        <a href="/student/requests.html" class="nav-item"><span class="nav-item-icon">📨</span> My Requests</a>
+        <a href="/student/chat.html" class="nav-item"><span class="nav-item-icon">💬</span> Chat</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Safety</div>
+        <a href="/student/complaints.html" class="nav-item"><span class="nav-item-icon">🚩</span> Complaints</a>
+      </div>
+      <div class="sidebar-footer">
+        <button class="nav-item" id="logout-btn"><span class="nav-item-icon">🚪</span> Logout</button>
+      </div>
+    </aside>
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Jobs & Internships</h1>
+          <p class="page-subtitle">Opportunities posted by our verified alumni</p>
+        </div>
+      </div>
+      <div class="content-body">
+        <!-- Filter Row -->
+        <div class="flex flex-between gap-4 mb-6" style="flex-wrap:wrap;">
+          <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Search jobs, companies…">
+          </div>
+          <div class="tab-bar" style="margin-bottom:0;">
+            <button class="tab-btn active" data-type="all">All</button>
+            <button class="tab-btn" data-type="job">Jobs</button>
+            <button class="tab-btn" data-type="internship">Internships</button>
+          </div>
+        </div>
+
+        <div class="jobs-grid" id="jobs-grid">
+          <div class="flex-center" style="grid-column:1/-1;padding:60px 0;">
+            <div class="spinner"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/js/jobs.js"></script>
+</body>
+</html>

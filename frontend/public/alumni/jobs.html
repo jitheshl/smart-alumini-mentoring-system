@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni — Post Jobs — AlumniConnect</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a href="/alumni/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">🎓</div>
+        <span class="sidebar-brand-text">AlumniConnect</span>
+      </a>
+      <div class="sidebar-user">
+        <div id="sb-avatar"></div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sb-name">Loading…</div>
+          <div class="sidebar-user-role" style="color:var(--success);">Alumni</div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <a href="/alumni/dashboard.html" class="nav-item"><span class="nav-item-icon">🏠</span> Dashboard</a>
+        <a href="/alumni/profile.html" class="nav-item"><span class="nav-item-icon">👤</span> My Profile</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Contributions</div>
+        <a href="/alumni/jobs.html" class="nav-item active"><span class="nav-item-icon">💼</span> Post Jobs</a>
+        <a href="/alumni/requests.html" class="nav-item"><span class="nav-item-icon">📨</span> Mentor Requests</a>
+        <a href="/alumni/chat.html" class="nav-item"><span class="nav-item-icon">💬</span> Chat</a>
+      </div>
+      <div class="sidebar-footer">
+        <button class="nav-item" id="logout-btn"><span class="nav-item-icon">🚪</span> Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Post a Job / Internship</h1>
+          <p class="page-subtitle">Help students find opportunities at your company</p>
+        </div>
+      </div>
+      <div class="content-body">
+        <div style="display:grid;grid-template-columns:400px 1fr;gap:24px;align-items:start;" id="jobs-layout">
+
+          <!-- Post Form -->
+          <div class="card">
+            <div class="card-header" style="padding-bottom:20px;">
+              <div class="card-title">➕ Post New Opportunity</div>
+            </div>
+            <div class="card-body" style="padding-top:0;">
+              <form id="post-job-form">
+                <div class="form-group">
+                  <label class="form-label">Job Title *</label>
+                  <input class="form-control" id="job-title" type="text" placeholder="e.g. Frontend Developer" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Company *</label>
+                  <input class="form-control" id="job-company" type="text" placeholder="e.g. Google" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Type</label>
+                  <select class="form-control form-select" id="job-type">
+                    <option value="job">Full-Time Job</option>
+                    <option value="internship">Internship</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Location</label>
+                  <input class="form-control" id="job-location" type="text" placeholder="e.g. Bangalore / Remote">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Description *</label>
+                  <textarea class="form-textarea" id="job-desc" rows="5" placeholder="Describe the role, requirements, and how to apply…" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-full" id="post-job-btn">📤 Post Opportunity</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- My Jobs List -->
+          <div>
+            <div class="section-header">
+              <div class="section-title">📋 My Posted Jobs</div>
+            </div>
+            <div id="my-jobs-list">
+              <div class="flex-center" style="padding:40px 0;"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/js/alumni-jobs.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat — AlumniConnect</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a href="/alumni/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">🎓</div>
+        <span class="sidebar-brand-text">AlumniConnect</span>
+      </a>
+      <div class="sidebar-user">
+        <div id="sb-avatar"></div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sb-name">Loading…</div>
+          <div class="sidebar-user-role" style="color:var(--success);">Alumni</div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <a href="/alumni/dashboard.html" class="nav-item"><span class="nav-item-icon">🏠</span> Dashboard</a>
+        <a href="/alumni/profile.html" class="nav-item"><span class="nav-item-icon">👤</span> My Profile</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Contributions</div>
+        <a href="/alumni/jobs.html" class="nav-item"><span class="nav-item-icon">💼</span> Post Jobs</a>
+        <a href="/alumni/requests.html" class="nav-item"><span class="nav-item-icon">📨</span> Mentor Requests</a>
+        <a href="/alumni/meetings.html" class="nav-item"><span class="nav-item-icon">📅</span> Meetings</a>
+        <a href="/alumni/chat.html" class="nav-item active"><span class="nav-item-icon">💬</span> Chat</a>
+      </div>
+      <div class="sidebar-footer">
+        <button class="nav-item" id="logout-btn"><span class="nav-item-icon">🚪</span> Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Chat</h1>
+          <p class="page-subtitle">Message students and admins directly</p>
+        </div>
+      </div>
+      <div class="content-body">
+        <div class="chat-shell">
+          <div class="chat-contacts" id="chat-contacts"></div>
+          <div class="chat-window">
+            <div class="chat-window-header" id="chat-active-name">Select a conversation</div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input-row">
+              <input class="form-control" id="chat-input" type="text" placeholder="Type a message...">
+              <button class="btn btn-primary btn-sm" id="chat-send-btn">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/js/alumni-chat.js"></script>
+</body>
+</html>

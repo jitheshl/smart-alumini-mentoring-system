@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — AlumniConnect</title>
+  <meta name="description" content="Admin control panel for AlumniConnect platform.">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <style>
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .user-row td:first-child { display: flex; align-items: center; gap: 10px; }
+    .action-group { display: flex; gap: 6px; }
+  </style>
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="app-shell">
+    <!-- Admin Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="/admin/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">🛡️</div>
+        <span class="sidebar-brand-text">AdminPanel</span>
+      </a>
+      <div class="sidebar-user">
+        <div id="sb-avatar"></div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sb-name">Admin</div>
+          <div class="sidebar-user-role" style="color:var(--warning);">System Admin</div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Control Panel</div>
+        <a href="#analytics"   class="nav-item active admin-nav" data-tab="analytics"><span class="nav-item-icon">📊</span> Analytics</a>
+        <a href="#pending"     class="nav-item admin-nav" data-tab="pending"><span class="nav-item-icon">⏳</span> Pending Alumni <span class="nav-item-badge" id="pending-badge" style="display:none"></span></a>
+        <a href="#users"       class="nav-item admin-nav" data-tab="users"><span class="nav-item-icon">👥</span> All Users</a>
+        <a href="#complaints"  class="nav-item admin-nav" data-tab="complaints"><span class="nav-item-icon">🚩</span> Complaints <span class="nav-item-badge" id="complaints-badge" style="display:none"></span></a>
+        <a href="#jobs"        class="nav-item admin-nav" data-tab="jobs"><span class="nav-item-icon">💼</span> Monitor Jobs</a>
+        <a href="#meetings"    class="nav-item admin-nav" data-tab="meetings"><span class="nav-item-icon">📅</span> Meetings</a>
+        <a href="/admin/chat.html" class="nav-item"><span class="nav-item-icon">💬</span> Chat</a>
+      </div>
+      <div class="sidebar-footer">
+        <button class="nav-item" id="logout-btn"><span class="nav-item-icon">🚪</span> Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title" id="page-title">Analytics</h1>
+          <p class="page-subtitle" id="page-subtitle">Platform overview and statistics</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="refresh-btn">🔄 Refresh</button>
+      </div>
+
+      <div class="content-body">
+
+        <!-- ===== ANALYTICS TAB ===== -->
+        <div id="tab-analytics" class="admin-tab-content">
+          <div class="analytics-grid" id="analytics-grid">
+            <div class="flex-center" style="grid-column:1/-1;padding:40px 0;"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- ===== PENDING ALUMNI TAB ===== -->
+        <div id="tab-pending" class="admin-tab-content" style="display:none;">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Alumni</th><th>Branch</th><th>Company</th><th>Role</th><th>Pass-Out</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="pending-tbody">
+                <tr><td colspan="6" class="text-center" style="padding:40px;color:var(--text-muted);">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== USERS TAB ===== -->
+        <div id="tab-users" class="admin-tab-content" style="display:none;">
+          <div class="flex gap-3 mb-4" style="flex-wrap:wrap;">
+            <div class="search-bar">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="user-search" placeholder="Search users…">
+            </div>
+            <select class="form-control form-select" id="role-filter" style="width:140px;">
+              <option value="all">All Roles</option>
+              <option value="student">Students</option>
+              <option value="alumni">Alumni</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>User</th><th>Role</th><th>Branch</th><th>Company</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="users-tbody">
+                <tr><td colspan="6" class="text-center" style="padding:40px;color:var(--text-muted);">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== COMPLAINTS TAB ===== -->
+        <div id="tab-complaints" class="admin-tab-content" style="display:none;">
+          <div id="complaints-list">
+            <div class="flex-center" style="padding:60px 0;"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- ===== JOBS TAB ===== -->
+        <div id="tab-jobs" class="admin-tab-content" style="display:none;">
+          <div class="jobs-grid" id="admin-jobs-grid">
+            <div class="flex-center" style="grid-column:1/-1;padding:60px 0;"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- ===== MEETINGS TAB ===== -->
+        <div id="tab-meetings" class="admin-tab-content" style="display:none;">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Alumni / Mentor</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                  <th>Scheduled Date</th>
+                  <th>Requested</th>
+                </tr>
+              </thead>
+              <tbody id="meetings-tbody">
+                <tr><td colspan="6" class="text-center" style="padding:40px;color:var(--text-muted);">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="tab-chat" class="admin-tab-content" style="display:none;">
+          <div class="chat-shell">
+            <div class="chat-contacts" id="chat-contacts"></div>
+            <div class="chat-window">
+              <div class="chat-window-header" id="chat-active-name">Select a conversation</div>
+              <div class="chat-messages" id="chat-messages"></div>
+              <div class="chat-input-row">
+                <input class="form-control" id="chat-input" type="text" placeholder="Type a message...">
+                <button class="btn btn-primary btn-sm" id="chat-send-btn">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/js/admin.js"></script>
+</body>
+</html>

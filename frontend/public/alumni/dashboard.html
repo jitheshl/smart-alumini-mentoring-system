@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni Dashboard — AlumniConnect</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a href="/alumni/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">🎓</div>
+        <span class="sidebar-brand-text">AlumniConnect</span>
+      </a>
+      <div class="sidebar-user">
+        <div id="sb-avatar"></div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sb-name">Loading…</div>
+          <div class="sidebar-user-role" style="color:var(--success);">Alumni</div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <a href="/alumni/dashboard.html" class="nav-item active"><span class="nav-item-icon">🏠</span> Dashboard</a>
+        <a href="/alumni/profile.html" class="nav-item"><span class="nav-item-icon">👤</span> My Profile</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Contributions</div>
+        <a href="/alumni/jobs.html" class="nav-item"><span class="nav-item-icon">💼</span> Post Jobs</a>
+        <a href="/alumni/dashboard.html#requests" class="nav-item"><span class="nav-item-icon">📨</span> Mentor Requests</a>
+        <a href="/alumni/meetings.html" class="nav-item"><span class="nav-item-icon">📅</span> Meetings</a>
+        <a href="/alumni/chat.html" class="nav-item"><span class="nav-item-icon">💬</span> Chat</a>
+      </div>
+      <div class="sidebar-footer">
+        <button class="nav-item" id="logout-btn"><span class="nav-item-icon">🚪</span> Logout</button>
+      </div>
+    </aside>
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Alumni Dashboard</h1>
+          <p class="page-subtitle" id="greeting-text">Welcome back!</p>
+        </div>
+      </div>
+      <div class="content-body">
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card success">
+            <div class="stat-icon">📨</div>
+            <div class="stat-value" id="stat-incoming">—</div>
+            <div class="stat-label">Incoming Requests</div>
+          </div>
+          <div class="stat-card accent">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="stat-accepted">—</div>
+            <div class="stat-label">Students Mentoring</div>
+          </div>
+          <div class="stat-card warning">
+            <div class="stat-icon">💼</div>
+            <div class="stat-value" id="stat-jobs">—</div>
+            <div class="stat-label">Jobs Posted</div>
+          </div>
+          <div class="stat-card" style="background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(108,99,255,0.08));border-color:rgba(108,99,255,0.25);">
+            <div class="stat-icon">📅</div>
+            <div class="stat-value" id="stat-meetings">—</div>
+            <div class="stat-label">Meeting Requests</div>
+          </div>
+        </div>
+
+        <!-- Pending Mentor Requests -->
+        <div class="section-header">
+          <div>
+            <div class="section-title">📨 Pending Mentorship Requests</div>
+            <div class="section-subtitle">Students waiting for your response</div>
+          </div>
+          <a href="/alumni/requests.html" class="btn btn-ghost btn-sm">View All</a>
+        </div>
+        <div id="incoming-requests">
+          <div class="flex-center" style="padding:40px 0;"><div class="spinner"></div></div>
+        </div>
+
+        <!-- Incoming Meeting Requests -->
+        <div class="section-header" style="margin-top:32px;">
+          <div>
+            <div class="section-title">📅 Incoming Meeting Requests</div>
+            <div class="section-subtitle">Students requesting 1-on-1 sessions</div>
+          </div>
+          <a href="/alumni/meetings.html" class="btn btn-ghost btn-sm">View All</a>
+        </div>
+        <div id="incoming-meetings">
+          <div class="flex-center" style="padding:40px 0;"><div class="spinner"></div></div>
+        </div>
+
+        <div class="section-header" style="margin-top:32px;">
+          <div>
+            <div class="section-title">Chat</div>
+            <div class="section-subtitle">Message your mentees and admins</div>
+          </div>
+        </div>
+        <div class="chat-shell">
+          <div class="chat-contacts" id="chat-contacts"></div>
+          <div class="chat-window">
+            <div class="chat-window-header" id="chat-active-name">Select a conversation</div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input-row">
+              <input class="form-control" id="chat-input" type="text" placeholder="Type a message...">
+              <button class="btn btn-primary btn-sm" id="chat-send-btn">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/js/alumni-dashboard.js"></script>
+</body>
+</html>

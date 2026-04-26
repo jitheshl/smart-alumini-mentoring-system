@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — AlumniConnect</title>
+  <meta name="description" content="Manage your student profile on AlumniConnect.">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <style>
+    /* ── Profile Page Layout ── */
+    .profile-page-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .profile-page-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Left identity card */
+    .profile-identity-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 32px 24px;
+      text-align: center;
+      position: sticky;
+      top: 24px;
+    }
+    .profile-avatar-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .profile-avatar-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00d4aa 0%, #6c63ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: #fff;
+      border: 4px solid var(--bg-card);
+      box-shadow: 0 0 0 2px var(--success);
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow var(--transition);
+    }
+    .profile-avatar-circle:hover { box-shadow: 0 0 0 3px var(--success); }
+    .profile-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-edit-btn {
+      position: absolute;
+      bottom: 2px; right: 2px;
+      width: 30px; height: 30px;
+      background: var(--success);
+      border: 2px solid var(--bg-card);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .photo-edit-btn:hover { background: #00b899; transform: scale(1.1); }
+
+    .profile-display-name  { font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
+    .profile-display-sub   { font-size: 0.82rem; color: var(--success); font-weight: 600; margin-bottom: 4px; }
+    .profile-display-meta  { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 20px; }
+
+    .profile-stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .profile-stat-cell {
+      background: var(--bg-elevated);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      text-align: center;
+    }
+    .profile-stat-cell .val { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); }
+    .profile-stat-cell .lbl { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+    .profile-links-row {
+      display: flex; justify-content: center; gap: 10px; margin-top: 4px;
+    }
+    .profile-social-link {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; text-decoration: none;
+      transition: background var(--transition), border-color var(--transition), transform var(--transition);
+    }
+    .profile-social-link:hover {
+      background: var(--success-soft);
+      border-color: var(--success);
+      transform: translateY(-2px);
+    }
+    .interests-preview {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      justify-content: center;
+      margin-top: 12px;
+    }
+    .interests-preview .tag {
+      font-size: 0.7rem; padding: 3px 10px;
+      background: var(--success-soft);
+      border-color: rgba(0,212,170,0.2);
+      color: var(--success);
+    }
+
+    /* Right edit sections */
+    .edit-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      transition: border-color var(--transition);
+    }
+    .edit-section:hover { border-color: var(--border-hover); }
+    .edit-section-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 20px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .edit-section-icon {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--success-soft);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .edit-section-title    { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); }
+    .edit-section-subtitle { font-size: 0.75rem; color: var(--text-muted); margin-top: 1px; }
+
+    .form-grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .form-grid-3 {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+    }
+    @media (max-width: 640px) {
+      .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .tag-input-row { display: flex; gap: 8px; align-items: flex-end; }
+    .tag-input-row .form-control { flex: 1; }
+    .tag-counter { font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; }
+    .char-counter { font-size: 0.72rem; color: var(--text-muted); text-align: right; margin-top: 6px; }
+
+    /* Project card */
+    .project-edit-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .project-edit-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .project-number {
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--success);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: var(--success-soft);
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    /* Floating save bar */
+    .save-bar {
+      position: sticky; bottom: 24px; z-index: 100;
+      display: flex; justify-content: flex-end; padding: 0;
+    }
+    .save-bar-inner {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-full);
+      padding: 10px 10px 10px 20px;
+      display: flex; align-items: center; gap: 16px;
+      box-shadow: 0 8px 32px rgba(108,99,255,0.2);
+    }
+    .save-bar-text { font-size: 0.82rem; color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle menu">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="/student/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">🎓</div>
+        <span class="sidebar-brand-text">AlumniConnect</span>
+      </a>
+      <div class="sidebar-user">
+        <div id="sb-avatar"></div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sb-name">Loading…</div>
+          <div class="sidebar-user-role">Student</div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <a href="/student/dashboard.html" class="nav-item"><span class="nav-item-icon">🏠</span> Dashboard</a>
+        <a href="/student/profile.html" class="nav-item active"><span class="nav-item-icon">👤</span> My Profile</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Network</div>
+        <a href="/student/mentors.html" class="nav-item"><span class="nav-item-icon">🤝</span> Find Mentors</a>
+        <a href="/student/my-mentors.html" class="nav-item"><span class="nav-item-icon">👨‍🏫</span> My Mentors</a>
+        <a href="/student/jobs.html" class="nav-item"><span class="nav-item-icon">💼</span> Jobs &amp; Internships</a>
+        <a href="/student/requests.html" class="nav-item"><span class="nav-item-icon">📨</span> My Requests</a>
+        <a href="/student/chat.html" class="nav-item"><span class="nav-item-icon">💬</span> Chat</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Safety</div>
+        <a href="/student/complaints.html" class="nav-item"><span class="nav-item-icon">🚩</span> Complaints</a>
+      </div>
+      <div class="sidebar-footer">
+        <button class="nav-item" id="logout-btn"><span class="nav-item-icon">🚪</span> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">My Profile</h1>
+          <p class="page-subtitle">Showcase your skills and projects to alumni mentors</p>
+        </div>
+      </div>
+
+      <div class="content-body">
+        <input type="file" id="photo-input" accept="image/*" style="display:none;">
+
+        <div class="profile-page-grid">
+          <!-- ── Left: Live preview card ── -->
+          <div>
+            <div class="profile-identity-card">
+              <div class="profile-avatar-wrap">
+                <div class="profile-avatar-circle" id="photo-preview" onclick="document.getElementById('photo-input').click()">
+                  <span id="photo-initials">👤</span>
+                </div>
+                <label for="photo-input" class="photo-edit-btn" title="Change photo">📷</label>
+              </div>
+              <div class="profile-display-name" id="display-name">—</div>
+              <div class="profile-display-sub" id="display-sub">—</div>
+              <div class="profile-display-meta" id="display-meta">—</div>
+
+              <div class="profile-stats-row">
+                <div class="profile-stat-cell">
+                  <div class="val" id="display-cgpa">—</div>
+                  <div class="lbl">CGPA</div>
+                </div>
+                <div class="profile-stat-cell">
+                  <div class="val" id="display-projects">0</div>
+                  <div class="lbl">Projects</div>
+                </div>
+              </div>
+
+              <div id="display-bio" style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;margin-bottom:14px;min-height:24px;"></div>
+
+              <div class="interests-preview" id="display-interests"></div>
+
+              <div class="profile-links-row" id="display-links" style="margin-top:16px;"></div>
+            </div>
+          </div>
+
+          <!-- ── Right: Edit form ── -->
+          <div>
+            <!-- Basic Info -->
+            <div class="edit-section">
+              <div class="edit-section-header">
+                <div class="edit-section-icon">👤</div>
+                <div>
+                  <div class="edit-section-title">Basic Information</div>
+                  <div class="edit-section-subtitle">Your name, branch, year and academic record</div>
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label" for="p-name">Full Name *</label>
+                <input class="form-control" id="p-name" type="text" placeholder="Your full name">
+              </div>
+              <div class="form-grid-3">
+                <div class="form-group">
+                  <label class="form-label" for="p-branch">Branch / Dept</label>
+                  <input class="form-control" id="p-branch" type="text" placeholder="e.g. CSE">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-year">Year</label>
+                  <select class="form-control form-select" id="p-year">
+                    <option value="">Select Year</option>
+                    <option>1st Year</option>
+                    <option>2nd Year</option>
+                    <option>3rd Year</option>
+                    <option>4th Year</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-cgpa">CGPA</label>
+                  <input class="form-control" id="p-cgpa" type="number" min="0" max="10" step="0.1" placeholder="8.5">
+                </div>
+              </div>
+            </div>
+
+            <!-- About Me -->
+            <div class="edit-section">
+              <div class="edit-section-header">
+                <div class="edit-section-icon">✏️</div>
+                <div>
+                  <div class="edit-section-title">About Me</div>
+                  <div class="edit-section-subtitle">A short bio visible to alumni mentors</div>
+                </div>
+              </div>
+              <textarea class="form-textarea" id="p-bio" maxlength="150" rows="3"
+                placeholder="Tell mentors about your goals, interests, and what kind of guidance you're looking for…"></textarea>
+              <div class="char-counter" id="bio-counter">0 / 150</div>
+            </div>
+
+            <!-- Skills -->
+            <div class="edit-section">
+              <div class="edit-section-header">
+                <div class="edit-section-icon">🛠️</div>
+                <div>
+                  <div class="edit-section-title">Skills</div>
+                  <div class="edit-section-subtitle">Technologies you know or are learning (max 10)</div>
+                </div>
+              </div>
+              <div class="tags" id="skills-tags" style="margin-bottom:14px;min-height:32px;"></div>
+              <div class="tag-input-row">
+                <input class="form-control" id="skill-input" type="text" placeholder="Type a skill and press Enter or Add…">
+                <button type="button" class="btn btn-secondary" id="add-skill-btn">+ Add</button>
+              </div>
+              <div class="tag-counter" id="skill-counter">0 / 10 skills</div>
+            </div>
+
+            <!-- Interests -->
+            <div class="edit-section">
+              <div class="edit-section-header">
+                <div class="edit-section-icon">🎯</div>
+                <div>
+                  <div class="edit-section-title">Interests &amp; Career Goals</div>
+                  <div class="edit-section-subtitle">Domains you're passionate about</div>
+                </div>
+              </div>
+              <div class="tags" id="interests-tags" style="margin-bottom:14px;min-height:32px;"></div>
+              <div class="tag-input-row">
+                <input class="form-control" id="interest-input" type="text" placeholder="e.g. Web Dev, AI/ML, Cloud Computing…">
+                <button type="button" class="btn btn-secondary" id="add-interest-btn">+ Add</button>
+              </div>
+              <div class="tag-counter" id="interest-counter">0 interests added</div>
+            </div>
+
+            <!-- Projects -->
+            <div class="edit-section">
+              <div class="edit-section-header">
+                <div class="edit-section-icon">🚀</div>
+                <div>
+                  <div class="edit-section-title">Projects</div>
+                  <div class="edit-section-subtitle">Showcase your work to potential mentors (max 3)</div>
+                </div>
+              </div>
+              <div id="projects-list"></div>
+              <button type="button" class="btn btn-ghost btn-sm" id="add-project-btn"
+                style="border-style:dashed;width:100%;margin-top:4px;">
+                ＋ Add a Project
+              </button>
+            </div>
+
+            <!-- Social Links -->
+            <div class="edit-section">
+              <div class="edit-section-header">
+                <div class="edit-section-icon">🔗</div>
+                <div>
+                  <div class="edit-section-title">Social Links</div>
+                  <div class="edit-section-subtitle">Help alumni find you online</div>
+                </div>
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="p-linkedin">
+                    <span style="color:#0a66c2;font-weight:700;">in</span> LinkedIn URL
+                  </label>
+                  <input class="form-control" id="p-linkedin" type="url" placeholder="https://linkedin.com/in/you">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-github">🐙 GitHub URL</label>
+                  <input class="form-control" id="p-github" type="url" placeholder="https://github.com/you">
+                </div>
+              </div>
+            </div>
+
+            <!-- Sticky Save Bar -->
+            <div class="save-bar">
+              <div class="save-bar-inner">
+                <span class="save-bar-text" id="save-bar-text">Changes are not saved yet</span>
+                <button class="btn btn-primary" id="save-profile-btn">💾 Save Changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/js/student-profile.js"></script>
+</body>
+</html>

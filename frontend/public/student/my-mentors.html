@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Mentors — AlumniConnect</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle menu">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a href="/student/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">🎓</div>
+        <span class="sidebar-brand-text">AlumniConnect</span>
+      </a>
+      <div class="sidebar-user">
+        <div id="sb-avatar"></div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sb-name">Loading…</div>
+          <div class="sidebar-user-role">Student</div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <a href="/student/dashboard.html" class="nav-item"><span class="nav-item-icon">🏠</span> Dashboard</a>
+        <a href="/student/profile.html" class="nav-item"><span class="nav-item-icon">👤</span> My Profile</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Network</div>
+        <a href="/student/mentors.html" class="nav-item"><span class="nav-item-icon">🤝</span> Find Mentors</a>
+        <a href="/student/my-mentors.html" class="nav-item active"><span class="nav-item-icon">👨‍🏫</span> My Mentors</a>
+        <a href="/student/jobs.html" class="nav-item"><span class="nav-item-icon">💼</span> Jobs &amp; Internships</a>
+        <a href="/student/requests.html" class="nav-item"><span class="nav-item-icon">📨</span> My Requests</a>
+        <a href="/student/meetings.html" class="nav-item"><span class="nav-item-icon">📅</span> My Meetings</a>
+        <a href="/student/chat.html" class="nav-item"><span class="nav-item-icon">💬</span> Chat</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Safety</div>
+        <a href="/student/complaints.html" class="nav-item"><span class="nav-item-icon">🚩</span> Complaints</a>
+      </div>
+      <div class="sidebar-footer">
+        <button class="nav-item" id="logout-btn"><span class="nav-item-icon">🚪</span> Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">My Mentors</h1>
+          <p class="page-subtitle">Mentors who have accepted your request</p>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <input type="text" class="input" id="search-input" placeholder="Search my mentors…" style="width:280px;background:var(--bg-elevated);">
+        </div>
+      </div>
+
+      <div class="content-body">
+        <div class="mentors-grid" id="mentor-grid">
+          <div class="flex-center" style="grid-column:1/-1;padding:80px 0;"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Profile Modal -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <span class="modal-title">Mentor Profile</span>
+        <button class="modal-close" id="close-modal">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Meeting Request Modal -->
+  <div class="modal-overlay" id="meeting-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">📅 Request Meeting</span>
+        <button class="modal-close" id="close-meeting-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm text-muted" style="margin-bottom:16px;">
+          Requesting a 1-on-1 meeting with <strong id="meeting-alumni-name"></strong>. They will respond with available time slots.
+        </p>
+        <div class="form-group">
+          <label class="form-label">Reason / Topic <span style="color:var(--danger);">*</span></label>
+          <textarea id="meeting-reason" class="input form-textarea" rows="4" placeholder="e.g. I would like to discuss resume review and interview prep..."></textarea>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:5px;">Minimum 10 characters. Be specific about what you'd like to discuss.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="cancel-meeting-modal">Cancel</button>
+        <button class="btn btn-primary" id="send-meeting-btn">📅 Send Meeting Request</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/js/my-mentors.js"></script>
+</body>
+</html>

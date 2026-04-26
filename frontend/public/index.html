@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlumniConnect — Sign In</title>
+  <meta name="description" content="Connect with alumni, find mentors, and explore job opportunities.">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body class="auth-page">
+  <div class="auth-container">
+    <!-- Left Brand Panel -->
+    <div class="auth-brand">
+      <div class="brand-logo">
+        <div class="brand-logo-icon">🎓</div>
+        <span class="brand-logo-text">AlumniConnect</span>
+      </div>
+      <h1 class="brand-tagline">Where <span>Futures</span><br>Get Built</h1>
+      <p class="brand-desc">Connect with verified alumni, get personalized mentorship, and discover exclusive career opportunities tailored for you.</p>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-num">500+</span>
+          <span class="brand-stat-label">Alumni</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-num">1.2K</span>
+          <span class="brand-stat-label">Students</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-num">300+</span>
+          <span class="brand-stat-label">Jobs</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Form Panel -->
+    <div class="auth-form-panel">
+      <h2>Welcome Back</h2>
+      <p class="auth-subtitle">Sign in to your account to continue</p>
+
+      <div class="role-tabs" role="tablist">
+        <button class="role-tab active" data-role="student" id="tab-student">👨‍🎓 Student</button>
+        <button class="role-tab" data-role="alumni" id="tab-alumni">👨‍💼 Alumni</button>
+        <button class="role-tab" data-role="admin" id="tab-admin">🛡️ Admin</button>
+      </div>
+
+      <div class="auth-alert" id="auth-alert"></div>
+
+      <form id="login-form" novalidate autocomplete="off">
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <div class="input-group">
+            <span class="input-icon">✉️</span>
+            <input class="form-control" type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+          </div>
+          <span class="form-error" id="email-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-group">
+            <span class="input-icon">🔒</span>
+            <input class="form-control" type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+            <button type="button" class="pw-toggle" id="pw-toggle" title="Show/hide password">👁️</button>
+          </div>
+          <span class="form-error" id="password-error"></span>
+        </div>
+
+        <button type="submit" class="btn-auth" id="login-btn">
+          <span id="btn-text">Sign In</span>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <p>New here? <a href="/signup.html">Create an Account</a></p>
+        <p style="margin-top:6px;">Alumni / Admin contact your officer to register.</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/js/auth.js"></script>
+</body>
+</html>

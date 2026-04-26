@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — AlumniConnect</title>
+  <meta name="description" content="Manage your alumni profile on AlumniConnect.">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <style>
+    /* ── Profile Page Enhancements ── */
+    .profile-page-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .profile-page-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Left column card */
+    .profile-identity-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 32px 24px;
+      text-align: center;
+      position: sticky;
+      top: 24px;
+    }
+    .profile-avatar-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .profile-avatar-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: #fff;
+      border: 4px solid var(--bg-card);
+      box-shadow: 0 0 0 2px var(--border-accent);
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow var(--transition);
+    }
+    .profile-avatar-circle:hover { box-shadow: 0 0 0 3px var(--accent); }
+    .profile-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-edit-btn {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 30px;
+      height: 30px;
+      background: var(--accent);
+      border: 2px solid var(--bg-card);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .photo-edit-btn:hover { background: var(--accent-hover); transform: scale(1.1); }
+    .profile-display-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .profile-display-role {
+      font-size: 0.82rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .profile-display-company {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    .profile-stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .profile-stat-cell {
+      background: var(--bg-elevated);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      text-align: center;
+    }
+    .profile-stat-cell .val {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .profile-stat-cell .lbl {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .profile-links-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .profile-social-link {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background var(--transition), border-color var(--transition), transform var(--transition);
+    }
+    .profile-social-link:hover {
+      background: var(--accent-soft);
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+
+    /* Right column: edit form */
+    .edit-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      transition: border-color var(--transition);
+    }
+    .edit-section:hover { border-color: var(--border-hover); }
+    .edit-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .edit-section-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .edit-section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .edit-section-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .form-grid-2 { grid-template-columns: 1fr; }
+    }
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 700px) {
+      .form-grid-3 { grid-template-columns: 1fr 1fr; }
+    }
+    .skill-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .skill-input-row .form-control { flex: 1; }
+    .skill-counter {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    /* Floating save bar */
+    .save-bar {
+      position: sticky;
+      bottom: 24px;
+      z-index: 100;
+      display: flex;
+      justify-content: flex-end;
+      padding: 0;
+    }
+    .save-bar-inner {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-full);
+      padding: 10px 10px 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 8px 32px rgba(108,99,255,0.2);
+    }
+    .save-bar-text {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+    /* Char counter */
+    .char-counter {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: right;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle menu">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="/alumni/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">🎓</div>
+        <span class="sidebar-brand-text">AlumniConnect</span>
+      </a>
+      <div class="sidebar-user">
+        <div id="sb-avatar"></div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sb-name">Loading…</div>
+          <div class="sidebar-user-role" style="color:var(--success);">Alumni</div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <a href="/alumni/dashboard.html" class="nav-item"><span class="nav-item-icon">🏠</span> Dashboard</a>
+        <a href="/alumni/profile.html" class="nav-item active"><span class="nav-item-icon">👤</span> My Profile</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Contributions</div>
+        <a href="/alumni/jobs.html" class="nav-item"><span class="nav-item-icon">💼</span> Post Jobs</a>
+        <a href="/alumni/requests.html" class="nav-item"><span class="nav-item-icon">📨</span> Mentor Requests</a>
+        <a href="/alumni/chat.html" class="nav-item"><span class="nav-item-icon">💬</span> Chat</a>
+      </div>
+      <div class="sidebar-footer">
+        <button class="nav-item" id="logout-btn"><span class="nav-item-icon">🚪</span> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">My Profile</h1>
+          <p class="page-subtitle">How students discover and connect with you</p>
+        </div>
+      </div>
+
+      <div class="content-body">
+        <!-- Hidden photo input -->
+        <input type="file" id="photo-input" accept="image/*" style="display:none;">
+
+        <div class="profile-page-grid">
+          <!-- ── Left: Identity card (live preview) ── -->
+          <div>
+            <div class="profile-identity-card">
+              <div class="profile-avatar-wrap">
+                <div class="profile-avatar-circle" id="photo-preview" onclick="document.getElementById('photo-input').click()">
+                  <span id="photo-initials">👤</span>
+                </div>
+                <label for="photo-input" class="photo-edit-btn" title="Change photo">📷</label>
+              </div>
+              <div class="profile-display-name" id="display-name">—</div>
+              <div class="profile-display-role" id="display-role">—</div>
+              <div class="profile-display-company" id="display-company">—</div>
+
+              <div class="profile-stats-row">
+                <div class="profile-stat-cell">
+                  <div class="val" id="display-exp">—</div>
+                  <div class="lbl">Yrs Exp</div>
+                </div>
+                <div class="profile-stat-cell">
+                  <div class="val" id="display-passout">—</div>
+                  <div class="lbl">Batch</div>
+                </div>
+              </div>
+
+              <div id="display-bio" style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;margin-bottom:16px;min-height:24px;"></div>
+
+              <div class="profile-links-row" id="display-links">
+                <!-- populated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Right: Edit form ── -->
+          <div>
+            <!-- Basic Info -->
+            <div class="edit-section">
+              <div class="edit-section-header">
+                <div class="edit-section-icon">👤</div>
+                <div>
+                  <div class="edit-section-title">Basic Information</div>
+                  <div class="edit-section-subtitle">Your name, branch and academic details</div>
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label" for="p-name">Full Name *</label>
+                <input class="form-control" id="p-name" type="text" placeholder="Your full name">
+              </div>
+              <div class="form-grid-3">
+                <div class="form-group">
+                  <label class="form-label" for="p-branch">Branch / Dept</label>
+                  <input class="form-control" id="p-branch" type="text" placeholder="e.g. CSE">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-passout">Pass-Out Year</label>
+                  <input class="form-control" id="p-passout" type="number" min="1990" max="2030" placeholder="2021">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-exp">Experience (yrs)</label>
+                  <input class="form-control" id="p-exp" type="number" min="0" max="50" placeholder="3">
+                </div>
+              </div>
+            </div>
+
+            <!-- Current Position -->
+            <div class="edit-section">
+              <div class="edit-section-header">
+                <div class="edit-section-icon">🏢</div>
+                <div>
+                  <div class="edit-section-title">Current Position</div>
+                  <div class="edit-section-subtitle">Where you work and what you do</div>
+                </div>
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="p-company">Company</label>
+                  <input class="form-control" id="p-company" type="text" placeholder="e.g. Google, Microsoft">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-role">Job Role</label>
+                  <input class="form-control" id="p-role" type="text" placeholder="e.g. Software Engineer">
+                </div>
+              </div>
+            </div>
+
+            <!-- About Me -->
+            <div class="edit-section">
+              <div class="edit-section-header">
+                <div class="edit-section-icon">✏️</div>
+                <div>
+                  <div class="edit-section-title">About Me</div>
+                  <div class="edit-section-subtitle">Share your journey and how you can help students</div>
+                </div>
+              </div>
+              <textarea class="form-textarea" id="p-bio" maxlength="150" rows="3"
+                placeholder="Share your journey and what kind of mentorship you can offer…"></textarea>
+              <div class="char-counter" id="bio-counter">0 / 150</div>
+            </div>
+
+            <!-- Skills -->
+            <div class="edit-section">
+              <div class="edit-section-header">
+                <div class="edit-section-icon">🛠️</div>
+                <div>
+                  <div class="edit-section-title">Skills & Expertise</div>
+                  <div class="edit-section-subtitle">Technologies and domains you're proficient in</div>
+                </div>
+              </div>
+              <div class="tags" id="skills-tags" style="margin-bottom:14px;min-height:32px;"></div>
+              <div class="skill-input-row">
+                <input class="form-control" id="skill-input" type="text" placeholder="Type a skill and press Enter or Add…">
+                <button type="button" class="btn btn-secondary" id="add-skill-btn">+ Add</button>
+              </div>
+              <div class="skill-counter" id="skill-counter">0 / 10 skills added</div>
+            </div>
+
+            <!-- Links -->
+            <div class="edit-section">
+              <div class="edit-section-header">
+                <div class="edit-section-icon">🔗</div>
+                <div>
+                  <div class="edit-section-title">Social Links</div>
+                  <div class="edit-section-subtitle">Help students find you online</div>
+                </div>
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="p-linkedin">
+                    <span style="color:#0a66c2;">in</span> LinkedIn URL
+                  </label>
+                  <input class="form-control" id="p-linkedin" type="url" placeholder="https://linkedin.com/in/you">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-github">
+                    🐙 GitHub URL
+                  </label>
+                  <input class="form-control" id="p-github" type="url" placeholder="https://github.com/you">
+                </div>
+              </div>
+            </div>
+
+            <!-- Sticky Save Bar -->
+            <div class="save-bar">
+              <div class="save-bar-inner">
+                <span class="save-bar-text">Changes are not saved yet</span>
+                <button class="btn btn-primary" id="save-profile-btn">💾 Save Changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/js/alumni-profile.js"></script>
+</body>
+</html>

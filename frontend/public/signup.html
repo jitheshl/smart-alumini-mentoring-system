@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — AlumniConnect</title>
+  <meta name="description" content="Create your AlumniConnect account to connect with alumni and students.">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/auth.css">
+  <style>
+    .role-card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .role-card {
+      padding: 14px 12px;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: center;
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .role-card.selected {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .role-card input[type="radio"] { display: none; }
+    .role-card-icon { font-size: 1.6rem; display: block; margin-bottom: 4px; }
+    .role-card-label { font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); }
+    .role-card.selected .role-card-label { color: var(--accent); }
+    .alumni-fields { display: none; }
+  </style>
+</head>
+<body class="auth-page">
+  <div class="auth-container">
+    <!-- Brand Panel -->
+    <div class="auth-brand">
+      <div class="brand-logo">
+        <div class="brand-logo-icon">🎓</div>
+        <span class="brand-logo-text">AlumniConnect</span>
+      </div>
+      <h1 class="brand-tagline">Join the <span>Community</span>,<br>Build Your Future</h1>
+      <p class="brand-desc">Register as a student to find mentors and jobs, or as an alumni to give back and post opportunities.</p>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-num">500+</span>
+          <span class="brand-stat-label">Alumni</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-num">1.2K</span>
+          <span class="brand-stat-label">Students</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-num">300+</span>
+          <span class="brand-stat-label">Jobs</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Panel -->
+    <div class="auth-form-panel" style="overflow-y:auto;max-height:100vh;">
+      <h2>Create Account</h2>
+      <p class="auth-subtitle">Join thousands building their careers</p>
+
+      <div class="auth-alert" id="auth-alert"></div>
+
+      <!-- Role Selector -->
+      <div class="role-card-grid">
+        <label class="role-card selected" id="card-student">
+          <input type="radio" name="role" value="student" checked>
+          <span class="role-card-icon">👨‍🎓</span>
+          <span class="role-card-label">Student</span>
+        </label>
+        <label class="role-card" id="card-alumni">
+          <input type="radio" name="role" value="alumni">
+          <span class="role-card-icon">👨‍💼</span>
+          <span class="role-card-label">Alumni</span>
+        </label>
+      </div>
+
+      <form id="signup-form" novalidate autocomplete="off">
+        <!-- Common Fields -->
+        <div class="form-group">
+          <label class="form-label" for="name">Full Name</label>
+          <div class="input-group">
+            <span class="input-icon">👤</span>
+            <input class="form-control" type="text" id="name" placeholder="John Doe" required>
+          </div>
+          <span class="form-error" id="name-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <div class="input-group">
+            <span class="input-icon">✉️</span>
+            <input class="form-control" type="email" id="email" placeholder="you@example.com" required>
+          </div>
+          <span class="form-error" id="email-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-group">
+            <span class="input-icon">🔒</span>
+            <input class="form-control" type="password" id="password" placeholder="Min 6 characters" required>
+            <button type="button" class="pw-toggle" id="pw-toggle">👁️</button>
+          </div>
+          <span class="form-error" id="password-error"></span>
+        </div>
+
+        <!-- Student Fields -->
+        <div class="student-fields">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label class="form-label" for="branch">Branch</label>
+              <input class="form-control" type="text" id="branch" placeholder="e.g. CSE">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="year">Year</label>
+              <select class="form-control form-select" id="year">
+                <option value="">Select</option>
+                <option>1st Year</option><option>2nd Year</option>
+                <option>3rd Year</option><option>4th Year</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alumni Fields -->
+        <div class="alumni-fields">
+          <div class="form-group">
+            <label class="form-label" for="company">Current Company</label>
+            <div class="input-group">
+              <span class="input-icon">🏢</span>
+              <input class="form-control" type="text" id="company" placeholder="e.g. Google, Microsoft">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="jobRole">Job Role</label>
+            <div class="input-group">
+              <span class="input-icon">💼</span>
+              <input class="form-control" type="text" id="jobRole" placeholder="e.g. Software Engineer">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label class="form-label" for="a-branch">Branch</label>
+              <input class="form-control" type="text" id="a-branch" placeholder="e.g. CSE">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="passOutYear">Pass-Out Year</label>
+              <input class="form-control" type="number" id="passOutYear" placeholder="2021" min="1990" max="2030">
+            </div>
+          </div>
+          <div class="auth-alert show info" style="display:block;background:var(--accent-soft);border-color:var(--accent);color:var(--accent);margin-bottom:16px;">
+            ℹ️ Alumni accounts require admin approval before login.
+          </div>
+        </div>
+
+        <button type="submit" class="btn-auth" id="signup-btn">
+          <span id="btn-text">Create Account</span>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="/">Sign In</a>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/js/signup.js"></script>
+</body>
+</html>

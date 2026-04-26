@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — AlumniConnect</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle menu">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="/student/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">🎓</div>
+        <span class="sidebar-brand-text">AlumniConnect</span>
+      </a>
+
+      <div class="sidebar-user">
+        <div id="sb-avatar"></div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sb-name">Loading…</div>
+          <div class="sidebar-user-role">Student</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <a href="/student/dashboard.html" class="nav-item active" id="nav-dashboard">
+          <span class="nav-item-icon">🏠</span> Dashboard
+        </a>
+        <a href="/student/profile.html" class="nav-item" id="nav-profile">
+          <span class="nav-item-icon">👤</span> My Profile
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Network</div>
+        <a href="/student/mentors.html" class="nav-item" id="nav-mentors">
+          <span class="nav-item-icon">🤝</span> Find Mentors
+        </a>
+        <a href="/student/my-mentors.html" class="nav-item" id="nav-my-mentors">
+          <span class="nav-item-icon">👨‍🏫</span> My Mentors
+        </a>
+        <a href="/student/jobs.html" class="nav-item" id="nav-jobs">
+          <span class="nav-item-icon">💼</span> Jobs & Internships
+        </a>
+        <a href="/student/requests.html" class="nav-item" id="nav-requests">
+          <span class="nav-item-icon">📨</span> My Requests
+          <span class="nav-item-badge" id="pending-badge" style="display:none"></span>
+        </a>
+        <a href="/student/meetings.html" class="nav-item" id="nav-meetings">
+          <span class="nav-item-icon">📅</span> My Meetings
+        </a>
+        <a href="/student/chat.html" class="nav-item" id="nav-chat">
+          <span class="nav-item-icon">💬</span> Chat
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Safety</div>
+        <a href="/student/complaints.html" class="nav-item" id="nav-complaints">
+          <span class="nav-item-icon">🚩</span> Complaints
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="nav-item" id="logout-btn">
+          <span class="nav-item-icon">🚪</span> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-subtitle" id="greeting-text">Good morning! Here's what's happening.</p>
+        </div>
+      </div>
+
+      <div class="content-body">
+        <!-- Stats -->
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card accent">
+            <div class="stat-icon">🤝</div>
+            <div class="stat-value" id="stat-mentors">—</div>
+            <div class="stat-label">Available Mentors</div>
+          </div>
+          <div class="stat-card success">
+            <div class="stat-icon">💼</div>
+            <div class="stat-value" id="stat-jobs">—</div>
+            <div class="stat-label">Open Positions</div>
+          </div>
+          <div class="stat-card warning">
+            <div class="stat-icon">📨</div>
+            <div class="stat-value" id="stat-pending">—</div>
+            <div class="stat-label">Pending Requests</div>
+          </div>
+          <div class="stat-card info">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="stat-accepted">—</div>
+            <div class="stat-label">Connected Mentors</div>
+          </div>
+          <div class="stat-card" style="background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(108,99,255,0.08));border-color:rgba(108,99,255,0.25);">
+            <div class="stat-icon">📅</div>
+            <div class="stat-value" id="stat-meetings">—</div>
+            <div class="stat-label">Meetings</div>
+          </div>
+        </div>
+
+        <!-- Quick Access -->
+        <div class="section-header">
+          <div>
+            <div class="section-title">Quick Access</div>
+            <div class="section-subtitle">Jump to your most used features</div>
+          </div>
+        </div>
+        <div class="quick-grid">
+          <a href="/student/mentors.html" class="quick-card">
+            <div class="quick-card-icon">🔍</div>
+            <div class="quick-card-label">Find Mentors</div>
+            <div class="quick-card-sub">Browse verified alumni</div>
+          </a>
+          <a href="/student/jobs.html" class="quick-card">
+            <div class="quick-card-icon">💼</div>
+            <div class="quick-card-label">Explore Jobs</div>
+            <div class="quick-card-sub">Jobs & internships posted by alumni</div>
+          </a>
+          <a href="/student/profile.html" class="quick-card">
+            <div class="quick-card-icon">✏️</div>
+            <div class="quick-card-label">Edit Profile</div>
+            <div class="quick-card-sub">Update your skills & projects</div>
+          </a>
+          <a href="/student/requests.html" class="quick-card">
+            <div class="quick-card-icon">📨</div>
+            <div class="quick-card-label">My Requests</div>
+            <div class="quick-card-sub">Track your mentorship requests</div>
+          </a>
+          <a href="/student/meetings.html" class="quick-card">
+            <div class="quick-card-icon" style="background:var(--success-soft);">📅</div>
+            <div class="quick-card-label">My Meetings</div>
+            <div class="quick-card-sub">Schedule 1-on-1 sessions</div>
+          </a>
+        </div>
+
+        <!-- Recent Requests -->
+        <div class="section-header mt-6">
+          <div>
+            <div class="section-title">Recent Mentorship Requests</div>
+            <div class="section-subtitle">Your latest connection attempts</div>
+          </div>
+          <a href="/student/requests.html" class="btn btn-ghost btn-sm">View All</a>
+        </div>
+        <div id="recent-requests">
+          <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <h3>No requests yet</h3>
+            <p>Find a mentor and send your first connection request!</p>
+          </div>
+        </div>
+
+        <!-- Upcoming Meetings -->
+        <div class="section-header mt-6">
+          <div>
+            <div class="section-title">📅 Upcoming Meetings</div>
+            <div class="section-subtitle">Your next scheduled 1-on-1 sessions</div>
+          </div>
+          <a href="/student/meetings.html" class="btn btn-ghost btn-sm">View All</a>
+        </div>
+        <div id="upcoming-meetings">
+          <div class="flex-center" style="padding:40px 0;"><div class="spinner"></div></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/js/student-dashboard.js"></script>
+</body>
+</html>
