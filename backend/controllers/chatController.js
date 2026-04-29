@@ -134,3 +134,83 @@ export const getConversation = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+// Edit a message (only the sender can edit their own message)
+export const editMessage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { message } = req.body;
+
+    if (!message?.trim()) {
+      return res.status(400).json({ success: false, message: 'Message cannot be empty' });
+    }
+
+    const chat = await ChatMessage.findById(id);
+    if (!chat) {
+      return res.status(404).json({ success: false, message: 'Message not found' });
+    }
+
+    // Only the sender can edit
+    if (String(chat.senderId) !== String(req.user._id)) {
+      return res.status(403).json({ success: false, message: 'You can only edit your own messages' });
+    }
+
+    chat.message = message.trim();
+    chat.isEdited = true;
+    await chat.save();
+
+    // Emit real-time edit event to the other person
+    const io = req.app.get('io');
+    if (io) {
+      const receiverId = String(chat.receiverId);
+      io.to(receiverId).emit('message_edited', {
+        _id: chat._id,
+        message: chat.message,
+        isEdited: true
+      });
+    }
+
+    res.json({ success: true, chat });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+// Delete a message (sender can delete own, admin can delete any)
+export const deleteMessage = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const chat = await ChatMessage.findById(id);
+    if (!chat) {
+      return res.status(404).json({ success: false, message: 'Message not found' });
+    }
+
+    const isSender = String(chat.senderId) === String(req.user._id);
+    const isAdmin = req.user.role === 'admin';
+
+    if (!isSender && !isAdmin) {
+      return res.status(403).json({ success: false, message: 'You can only delete your own messages' });
+    }
+
+    // Determine who to notify
+    const otherUserId = isSender ? String(chat.receiverId) : String(chat.senderId);
+
+    await ChatMessage.findByIdAndDelete(id);
+
+    // Emit real-time delete event
+    const io = req.app.get('io');
+    if (io) {
+      io.to(otherUserId).emit('message_deleted', { _id: id });
+      // If admin deleted someone else's message, also notify the sender
+      if (isAdmin && !isSender) {
+        io.to(String(chat.senderId)).emit('message_deleted', { _id: id });
+      }
+    }
+
+    res.json({ success: true, message: 'Message deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+

@@ -989,3 +989,47 @@ tbody tr { transition: background var(--transition); }
   }
 }
 
+/* === Chat Message Actions (Edit / Delete) === */
+.chat-msg-bubble {
+  position: relative;
+}
+.chat-msg-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.chat-msg-bubble:hover .chat-msg-actions {
+  opacity: 1;
+}
+.chat-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s, transform 0.15s;
+  line-height: 1;
+}
+.chat-action-btn:hover {
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.15);
+}
+.chat-msg-row.theirs .chat-action-btn:hover {
+  background: var(--bg-elevated);
+}
+.chat-edited-tag {
+  font-size: 0.65rem;
+  font-style: italic;
+  opacity: 0.6;
+  margin-left: 6px;
+}
+/* Editing mode indicator on send button */
+.btn.editing,
+button.editing {
+  background: var(--success) !important;
+  box-shadow: 0 0 12px rgba(16,185,129,0.3);
+}
+

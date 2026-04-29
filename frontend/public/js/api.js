@@ -81,6 +81,8 @@ export const cancelMeeting       = (id)      => apiFetch(`/meetings/${id}/cancel
 export const getChatContacts      = ()         => apiFetch('/chat/contacts');
 export const getConversation      = (userId)   => apiFetch(`/chat/conversation/${userId}`);
 export const sendChatMessage      = (body)     => apiFetch('/chat/send', { method: 'POST', body: JSON.stringify(body) });
+export const editChatMessage      = (id, msg)  => apiFetch(`/chat/${id}/edit`, { method: 'PUT', body: JSON.stringify({ message: msg }) });
+export const deleteChatMessage    = (id)       => apiFetch(`/chat/${id}`, { method: 'DELETE' });
 
 // Toast notification system
 export const toast = (() => {
