@@ -4,17 +4,17 @@
 
 const BASE = '/api';
 
-export const getToken = () => localStorage.getItem('token');
-export const getUser  = () => JSON.parse(localStorage.getItem('user') || 'null');
+export const getToken = () => sessionStorage.getItem('token');
+export const getUser  = () => JSON.parse(sessionStorage.getItem('user') || 'null');
 
 export const setAuth = (token, user) => {
-  localStorage.setItem('token', token);
-  localStorage.setItem('user', JSON.stringify(user));
+  sessionStorage.setItem('token', token);
+  sessionStorage.setItem('user', JSON.stringify(user));
 };
 
 export const clearAuth = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('user');
 };
 
 // Core fetch with auto JWT header injection

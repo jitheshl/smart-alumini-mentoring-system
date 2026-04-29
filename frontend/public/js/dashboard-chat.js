@@ -1,4 +1,4 @@
-import { getChatContacts, getConversation, sendChatMessage, avatarHtml, toast } from '/js/api.js';
+import { getChatContacts, getConversation, sendChatMessage, avatarHtml, toast, getToken } from '/js/api.js';
 
 export async function initDashboardChat(currentUser) {
   const contactsEl = document.getElementById('chat-contacts');
@@ -11,7 +11,64 @@ export async function initDashboardChat(currentUser) {
   let contacts = [];
   let activeUserId = null;
 
+  // --- Socket.IO real-time connection ---
+  let socket = null;
+  try {
+    // Load Socket.IO client from CDN (served by the server)
+    if (typeof io === 'undefined') {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = '/socket.io/socket.io.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    socket = io({ auth: { token: getToken() } });
+
+    socket.on('connect', () => {
+      console.log('💬 Chat connected in real-time');
+    });
+
+    socket.on('new_message', (msg) => {
+      // If this message is from the person we're currently chatting with, append it live
+      const senderId = String(msg.senderId?._id || msg.senderId);
+      if (senderId === String(activeUserId)) {
+        appendMessage(msg);
+      } else {
+        // Show a toast notification for messages from other contacts
+        const senderName = msg.senderId?.name || 'Someone';
+        toast.info(`💬 New message from ${senderName}`);
+      }
+    });
+
+    socket.on('connect_error', (err) => {
+      console.warn('Socket connection error:', err.message);
+    });
+  } catch (err) {
+    console.warn('Socket.IO not available, falling back to polling:', err.message);
+  }
+
   const roleLabel = (r) => r === 'admin' ? 'Admin' : r === 'alumni' ? 'Alumni' : 'Student';
+
+  // Append a single message to the chat window (used for real-time)
+  const appendMessage = (m) => {
+    // Remove empty state if present
+    const emptyState = messagesEl.querySelector('.empty-state');
+    if (emptyState) emptyState.remove();
+
+    const mine = String(m.senderId?._id || m.senderId) === String(currentUser._id);
+    const div = document.createElement('div');
+    div.className = `chat-msg-row ${mine ? 'mine' : 'theirs'}`;
+    div.innerHTML = `
+      <div class="chat-msg-bubble">
+        <div class="chat-msg-meta">${mine ? 'You' : (m.senderId?.name || 'User')} • ${new Date(m.timestamp).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' })}</div>
+        <div>${m.message}</div>
+      </div>`;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  };
 
   const renderMessages = (messages) => {
     if (!messages.length) {
@@ -73,13 +130,20 @@ export async function initDashboardChat(currentUser) {
     if (!message) return toast.warning('Type a message first');
     sendBtn.disabled = true;
     try {
-      await sendChatMessage({ receiverId: activeUserId, message });
+      const { chat } = await sendChatMessage({ receiverId: activeUserId, message });
       inputEl.value = '';
-      await loadConversation();
+      // Append own message immediately (no need to reload everything)
+      appendMessage({
+        _id: chat._id,
+        senderId: { _id: currentUser._id, name: currentUser.name },
+        message: chat.message,
+        timestamp: chat.timestamp || new Date().toISOString()
+      });
     } catch (err) {
       toast.error(err.message);
     } finally {
       sendBtn.disabled = false;
+      inputEl.focus();
     }
   });
 

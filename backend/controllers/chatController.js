@@ -88,6 +88,18 @@ export const sendMessage = async (req, res) => {
       message: message.trim()
     });
 
+    // Emit real-time event to the receiver via Socket.IO
+    const io = req.app.get('io');
+    if (io) {
+      io.to(String(receiverId)).emit('new_message', {
+        _id: chat._id,
+        senderId: { _id: req.user._id, name: req.user.name, role: req.user.role },
+        receiverId: { _id: receiverId },
+        message: chat.message,
+        timestamp: chat.timestamp
+      });
+    }
+
     res.status(201).json({ success: true, chat });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
