@@ -6,3 +6,4 @@ backend/.env
 frontend/public/uploads/*
 !frontend/public/uploads/.gitkeep
 project final.zip
+~$*.*
