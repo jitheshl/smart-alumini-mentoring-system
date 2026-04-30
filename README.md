@@ -13,6 +13,8 @@ A full-stack web application designed to bridge the gap between students and alu
 - **Real-time Chat**: Communcate with mentors and peers using the integrated chat system.
 - **Job Board**: Browse and apply for job opportunities posted by alumni.
 - **Complaint System**: Report issues or provide feedback to administrators.
+- **Forgot Password**: Simplified 2-step account recovery flow for all users.
+- **Contact Admin**: Direct line for users to communicate with administrators for support or inquiries.
 
 ### For Alumni
 - **Mentoring**: Share expertise and guide students in their professional journey.
