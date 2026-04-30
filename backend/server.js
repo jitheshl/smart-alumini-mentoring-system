@@ -16,6 +16,7 @@ import complaintRoutes from './routes/complaints.js';
 import adminRoutes from './routes/admin.js';
 import meetingRoutes from './routes/meetings.js';
 import chatRoutes from './routes/chat.js';
+import contactRoutes from './routes/contact.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -86,6 +87,7 @@ app.use('/api/complaints', complaintRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/meetings', meetingRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Serve frontend pages (catch-all to support direct URL access)
 app.get('*', (req, res) => {

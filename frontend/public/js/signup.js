@@ -6,15 +6,26 @@ if (user) redirectByRole(user.role);
 let selectedRole = 'student';
 
 // Role card toggle
+const updateRoleUI = (role) => {
+  selectedRole = role;
+  const radio = document.querySelector(`input[name="role"][value="${role}"]`);
+  if (radio) radio.checked = true;
+  document.getElementById('card-student').classList.toggle('selected', role === 'student');
+  document.getElementById('card-alumni').classList.toggle('selected',  role === 'alumni');
+  document.querySelector('.student-fields').style.display = role === 'student' ? '' : 'none';
+  document.querySelector('.alumni-fields').style.display  = role === 'alumni'  ? '' : 'none';
+};
+
 document.querySelectorAll('input[name="role"]').forEach(radio => {
-  radio.addEventListener('change', () => {
-    selectedRole = radio.value;
-    document.getElementById('card-student').classList.toggle('selected', selectedRole === 'student');
-    document.getElementById('card-alumni').classList.toggle('selected',  selectedRole === 'alumni');
-    document.querySelector('.student-fields').style.display = selectedRole === 'student' ? '' : 'none';
-    document.querySelector('.alumni-fields').style.display  = selectedRole === 'alumni'  ? '' : 'none';
-  });
+  radio.addEventListener('change', () => updateRoleUI(radio.value));
 });
+
+// Check for role in URL
+const urlParams = new URLSearchParams(window.location.search);
+const urlRole = urlParams.get('role');
+if (urlRole && ['student', 'alumni'].includes(urlRole)) {
+  updateRoleUI(urlRole);
+}
 
 // Password toggle
 document.getElementById('pw-toggle').addEventListener('click', function () {

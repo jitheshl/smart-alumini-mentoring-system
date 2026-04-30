@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Admin — AlumniConnect</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle menu">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a href="/student/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">🎓</div>
+        <span class="sidebar-brand-text">AlumniConnect</span>
+      </a>
+      <div class="sidebar-user">
+        <div id="sb-avatar"></div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sb-name">Loading…</div>
+          <div class="sidebar-user-role">Student</div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <a href="/student/dashboard.html" class="nav-item">🏠 Dashboard</a>
+        <a href="/student/profile.html" class="nav-item">👤 My Profile</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Network</div>
+        <a href="/student/mentors.html" class="nav-item">🤝 Find Mentors</a>
+        <a href="/student/my-mentors.html" class="nav-item">👨‍🏫 My Mentors</a>
+        <a href="/student/jobs.html" class="nav-item">💼 Jobs & Internships</a>
+        <a href="/student/requests.html" class="nav-item">📨 My Requests</a>
+        <a href="/student/meetings.html" class="nav-item">📅 My Meetings</a>
+        <a href="/student/chat.html" class="nav-item">💬 Chat</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Support</div>
+        <a href="/student/complaints.html" class="nav-item">🚩 Complaints</a>
+        <a href="/student/contact-admin.html" class="nav-item active">📩 Contact Admin</a>
+      </div>
+      <div class="sidebar-footer">
+        <button class="nav-item" id="logout-btn">🚪 Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Contact Admin</h1>
+          <p class="page-subtitle">Have an issue or suggestion? Reach out to the platform admin.</p>
+        </div>
+      </div>
+
+      <div class="content-body">
+        <div class="card mb-6">
+          <div class="card-header">
+            <h3>Send a Message</h3>
+          </div>
+          <div class="card-body">
+            <form id="contact-form">
+              <div class="form-group mb-4">
+                <label class="form-label" for="subject">Subject</label>
+                <input class="form-control" type="text" id="subject" placeholder="What is this about?" required>
+              </div>
+              <div class="form-group mb-4">
+                <label class="form-label" for="message">Message</label>
+                <textarea class="form-control" id="message" rows="5" placeholder="Explain your issue or question in detail..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="section-header mt-6">
+          <div class="section-title">Your Previous Messages</div>
+        </div>
+        <div id="previous-messages">
+          <div class="flex-center" style="padding:40px 0;"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/js/contact-admin.js"></script>
+</body>
+</html>

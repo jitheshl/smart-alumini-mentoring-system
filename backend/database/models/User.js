@@ -34,7 +34,11 @@ const userSchema = new mongoose.Schema({
   experience: { type: Number, default: 0 },
   passOutYear: { type: Number },
   isApproved: { type: Boolean, default: false },
-  isBlocked: { type: Boolean, default: false }
+  isBlocked: { type: Boolean, default: false },
+
+  // Password reset
+  resetToken:       { type: String, default: null },
+  resetTokenExpiry: { type: Date,   default: null }
 }, { timestamps: true });
 
 // Hash password before saving
@@ -53,6 +57,8 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 userSchema.methods.toSafeObject = function () {
   const obj = this.toObject();
   delete obj.password;
+  delete obj.resetToken;
+  delete obj.resetTokenExpiry;
   return obj;
 };
 

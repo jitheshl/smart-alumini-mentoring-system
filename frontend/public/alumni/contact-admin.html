@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alumni — Mentor Requests — AlumniConnect</title>
+  <title>Contact Admin — AlumniConnect</title>
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/dashboard.css">
   <link rel="stylesheet" href="/css/components.css">
 </head>
 <body>
-  <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+  <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle menu">☰</button>
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
       <a href="/alumni/dashboard.html" class="sidebar-brand">
@@ -32,37 +33,57 @@
       <div class="sidebar-section">
         <div class="sidebar-section-label">Contributions</div>
         <a href="/alumni/jobs.html" class="nav-item"><span class="nav-item-icon">💼</span> Post Jobs</a>
-        <a href="/alumni/requests.html" class="nav-item active"><span class="nav-item-icon">📨</span> Mentor Requests</a>
+        <a href="/alumni/dashboard.html#requests" class="nav-item"><span class="nav-item-icon">📨</span> Mentor Requests</a>
+        <a href="/alumni/meetings.html" class="nav-item"><span class="nav-item-icon">📅</span> Meetings</a>
         <a href="/alumni/chat.html" class="nav-item"><span class="nav-item-icon">💬</span> Chat</a>
       </div>
-      <div class="sidebar-footer">
       <div class="sidebar-section">
         <div class="sidebar-section-label">Support</div>
-        <a href="/alumni/contact-admin.html" class="nav-item" id="nav-contact-admin"><span class="nav-item-icon">📩</span> Contact Admin</a>
+        <a href="/alumni/contact-admin.html" class="nav-item active"><span class="nav-item-icon">📩</span> Contact Admin</a>
       </div>
+      <div class="sidebar-footer">
         <button class="nav-item" id="logout-btn"><span class="nav-item-icon">🚪</span> Logout</button>
       </div>
     </aside>
+
     <main class="main-content">
       <div class="page-header">
         <div>
-          <h1 class="page-title">Mentorship Requests</h1>
-          <p class="page-subtitle">Students seeking your guidance and mentorship</p>
+          <h1 class="page-title">Contact Admin</h1>
+          <p class="page-subtitle">Have an issue or suggestion? Reach out to the platform admin.</p>
         </div>
       </div>
+
       <div class="content-body">
-        <div class="tab-bar">
-          <button class="tab-btn active" data-status="pending">⏳ Pending</button>
-          <button class="tab-btn" data-status="accepted">✅ Accepted</button>
-          <button class="tab-btn" data-status="rejected">❌ Rejected</button>
-          <button class="tab-btn" data-status="all">All</button>
+        <div class="card mb-6">
+          <div class="card-header">
+            <h3>Send a Message</h3>
+          </div>
+          <div class="card-body">
+            <form id="contact-form">
+              <div class="form-group mb-4">
+                <label class="form-label" for="subject">Subject</label>
+                <input class="form-control" type="text" id="subject" placeholder="What is this about?" required>
+              </div>
+              <div class="form-group mb-4">
+                <label class="form-label" for="message">Message</label>
+                <textarea class="form-control" id="message" rows="5" placeholder="Explain your issue or question in detail..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+          </div>
         </div>
-        <div id="requests-list">
-          <div class="flex-center" style="padding:60px 0;"><div class="spinner"></div></div>
+
+        <div class="section-header mt-6">
+          <div class="section-title">Your Previous Messages</div>
+        </div>
+        <div id="previous-messages">
+          <div class="flex-center" style="padding:40px 0;"><div class="spinner"></div></div>
         </div>
       </div>
     </main>
   </div>
-  <script type="module" src="/js/alumni-requests.js"></script>
+
+  <script type="module" src="/js/contact-admin.js"></script>
 </body>
 </html>

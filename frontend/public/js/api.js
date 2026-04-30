@@ -31,8 +31,13 @@ export const apiFetch = async (path, options = {}) => {
 };
 
 // Auth helpers
-export const login    = (body) => apiFetch('/auth/login', { method: 'POST', body: JSON.stringify(body) });
-export const getMe    = ()     => apiFetch('/auth/me');
+export const login         = (body) => apiFetch('/auth/login', { method: 'POST', body: JSON.stringify(body) });
+export const getMe         = ()     => apiFetch('/auth/me');
+export const forgotPassword= (email)=> apiFetch('/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email }) });
+export const resetPassword = (token, newPassword, confirmPassword) =>
+  apiFetch('/auth/reset-password', { method: 'POST', body: JSON.stringify({ token, newPassword, confirmPassword }) });
+export const verifyEmail       = (email) => apiFetch('/auth/verify-email', { method: 'POST', body: JSON.stringify({ email }) });
+export const simpleResetPassword= (body)  => apiFetch('/auth/simple-reset', { method: 'POST', body: JSON.stringify(body) });
 
 // User helpers
 export const getProfile    = ()       => apiFetch('/users/profile');
@@ -83,6 +88,14 @@ export const getConversation      = (userId)   => apiFetch(`/chat/conversation/$
 export const sendChatMessage      = (body)     => apiFetch('/chat/send', { method: 'POST', body: JSON.stringify(body) });
 export const editChatMessage      = (id, msg)  => apiFetch(`/chat/${id}/edit`, { method: 'PUT', body: JSON.stringify({ message: msg }) });
 export const deleteChatMessage    = (id)       => apiFetch(`/chat/${id}`, { method: 'DELETE' });
+
+// Contact Admin
+export const sendContactMessage        = (body) => apiFetch('/contact', { method: 'POST', body: JSON.stringify(body) });
+export const sendPublicContactMessage  = (body) => apiFetch('/contact/public', { method: 'POST', body: JSON.stringify(body) });
+export const getMyContactMessages      = ()     => apiFetch('/contact/my');
+export const adminGetContactMessages   = (status) => apiFetch(`/contact/admin${status ? `?status=${status}` : ''}`);
+export const adminGetContactCount      = ()     => apiFetch('/contact/admin/count');
+export const adminResolveContactMessage= (id, adminReply) => apiFetch(`/contact/admin/${id}/resolve`, { method: 'PUT', body: JSON.stringify({ adminReply }) });
 
 // Toast notification system
 export const toast = (() => {

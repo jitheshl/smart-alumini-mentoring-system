@@ -31,11 +31,21 @@ const titleMap = {
   complaints: ['Complaints',      'Reported issues by students'],
   jobs:       ['Monitor Jobs',    'All job postings on the platform'],
   meetings:   ['Meetings Monitor','All 1-on-1 meeting sessions on the platform'],
+  'contact-messages': ['Contact Messages', 'User messages and support requests'],
   chat:       ['Chat',            'Secure messaging between users']
 };
 
 let currentTab = 'analytics';
-const loaders  = { analytics: loadAnalytics, pending: loadPending, users: loadUsers, complaints: loadComplaints, jobs: loadJobs, meetings: loadMeetings, chat: loadChat };
+const loaders  = { 
+  analytics: loadAnalytics, 
+  pending: loadPending, 
+  users: loadUsers, 
+  complaints: loadComplaints, 
+  jobs: loadJobs, 
+  meetings: loadMeetings, 
+  'contact-messages': loadContactMessages,
+  chat: loadChat 
+};
 
 function switchTab(tab) {
   document.querySelectorAll('.admin-tab-content').forEach(el => el.style.display = 'none');
@@ -78,8 +88,12 @@ async function loadAnalytics() {
     // Update badges
     const pb = document.getElementById('pending-badge');
     const cb = document.getElementById('complaints-badge');
+    const ctb = document.getElementById('contact-badge');
     if (a.pendingAlumni   > 0) { pb.textContent = a.pendingAlumni;  pb.style.display = ''; }
     if (a.openComplaints  > 0) { cb.textContent = a.openComplaints; cb.style.display = ''; }
+    
+    const { pendingCount } = await (await import('./api.js')).adminGetContactCount();
+    if (pendingCount > 0) { ctb.textContent = pendingCount; ctb.style.display = ''; }
   } catch (err) {
     toast.error('Analytics failed: ' + err.message);
   }
@@ -387,6 +401,71 @@ async function loadMeetings() {
     toast.error('Failed to load meetings: ' + err.message);
   }
 }
+
+// ─── Contact Messages ──────────────────────────────────────────────────────────
+async function loadContactMessages() {
+  const status = document.getElementById('contact-status-filter').value;
+  const container = document.getElementById('contact-messages-list');
+  container.innerHTML = '<div class="flex-center" style="padding:60px 0;"><div class="spinner"></div></div>';
+  
+  try {
+    const { messages } = await (await import('./api.js')).adminGetContactMessages(status === 'all' ? '' : status);
+    if (!messages.length) {
+      container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📩</div><h3>No messages found</h3></div>`;
+      return;
+    }
+
+    container.innerHTML = messages.map(m => `
+      <div class="card mb-4" style="border-left: 4px solid ${m.status === 'pending' ? 'var(--warning)' : 'var(--success)'};">
+        <div class="card-header flex-between">
+          <div>
+            <h4 style="margin:0;">${m.subject}</h4>
+            <div class="text-xs text-muted">From: ${m.userName} (${m.userRole}) · ${m.userEmail}</div>
+          </div>
+          <div class="text-right">
+            <span class="badge badge-${m.status === 'pending' ? 'warning' : 'success'} badge-dot">${m.status}</span>
+            <div class="text-xs text-muted mt-1">${formatDate(m.createdAt)}</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p style="white-space: pre-wrap; font-size:0.92rem;">${m.message}</p>
+          ${m.status === 'pending' ? `
+            <div class="mt-4">
+              <textarea class="form-control mb-2" id="reply-${m._id}" placeholder="Type an optional reply..."></textarea>
+              <button class="btn btn-success btn-sm resolve-btn" data-id="${m._id}">✅ Mark as Resolved</button>
+            </div>
+          ` : m.adminReply ? `
+            <div class="mt-4 p-3 bg-elevated border-left-accent" style="border-left: 3px solid var(--accent); border-radius: var(--radius-sm);">
+              <div class="text-xs font-semibold text-accent mb-1">ADMIN REPLY:</div>
+              <p style="margin:0; font-size:0.88rem;">${m.adminReply}</p>
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    `).join('');
+
+    container.querySelectorAll('.resolve-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
+        const reply = document.getElementById(`reply-${id}`).value;
+        btn.disabled = true;
+        try {
+          await (await import('./api.js')).adminResolveContactMessage(id, reply);
+          toast.success('Message resolved');
+          loadContactMessages();
+          loadAnalytics();
+        } catch (err) {
+          toast.error(err.message);
+          btn.disabled = false;
+        }
+      });
+    });
+  } catch (err) {
+    toast.error('Failed to load contact messages: ' + err.message);
+  }
+}
+
+document.getElementById('contact-status-filter').addEventListener('change', loadContactMessages);
 
 let chatReady = false;
 async function loadChat() {

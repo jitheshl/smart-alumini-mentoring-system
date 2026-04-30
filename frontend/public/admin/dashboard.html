@@ -44,6 +44,7 @@
         <a href="#complaints"  class="nav-item admin-nav" data-tab="complaints"><span class="nav-item-icon">🚩</span> Complaints <span class="nav-item-badge" id="complaints-badge" style="display:none"></span></a>
         <a href="#jobs"        class="nav-item admin-nav" data-tab="jobs"><span class="nav-item-icon">💼</span> Monitor Jobs</a>
         <a href="#meetings"    class="nav-item admin-nav" data-tab="meetings"><span class="nav-item-icon">📅</span> Meetings</a>
+        <a href="#contact-messages" class="nav-item admin-nav" data-tab="contact-messages"><span class="nav-item-icon">📩</span> Contact Messages <span class="nav-item-badge" id="contact-badge" style="display:none"></span></a>
         <a href="/admin/chat.html" class="nav-item"><span class="nav-item-icon">💬</span> Chat</a>
       </div>
       <div class="sidebar-footer">
@@ -142,6 +143,20 @@
                 <tr><td colspan="6" class="text-center" style="padding:40px;color:var(--text-muted);">Loading…</td></tr>
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- ===== CONTACT MESSAGES TAB ===== -->
+        <div id="tab-contact-messages" class="admin-tab-content" style="display:none;">
+          <div class="flex gap-3 mb-4">
+            <select class="form-control form-select" id="contact-status-filter" style="width:160px;">
+              <option value="all">All Messages</option>
+              <option value="pending" selected>Pending</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+          <div id="contact-messages-list">
+            <div class="flex-center" style="padding:60px 0;"><div class="spinner"></div></div>
           </div>
         </div>
 
